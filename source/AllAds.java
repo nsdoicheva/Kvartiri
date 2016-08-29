@@ -10,7 +10,6 @@ import comparators.NeighborhoodComparator;
 import comparators.NumberOfRoomsComparator;
 import comparators.PriceComparator;
 
-//vsichki obqvi
 public class AllAds {
 
 	private static List<Ad> allAds;
