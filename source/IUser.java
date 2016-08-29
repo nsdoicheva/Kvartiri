@@ -1,26 +1,30 @@
 package source;
 
+import java.util.Map;
 import java.util.Map.Entry;
+
+import source.Ad;
+import source.Criteria;
+import source.Message;
 
 public interface IUser {
 
-	void uploadAd(Ad ad);
+	boolean uploadAd(Ad ad);
 
 	void makeVipUser();
 
-	void deleteAd(Ad ad);
+	boolean deleteAd(Ad ad);
 
-	void listAllMyAds();
+	Map<Object, Ad> listAllMyAds();
 
 	Entry<Message, String> openMessage();
 
-	void deleteMessage(User user);
+	boolean deleteMessage(User user);
 
 	Message sendMessage(User user, Message message);
 
-	void upgrade(Ad ad, Criteria criteria, Object object);
+	boolean upgrade(Ad ad, Criteria criteria, Object object);
 
 	String changePassword(String oldPass, String password);
-
 
 }
