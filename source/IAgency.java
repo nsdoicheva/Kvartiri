@@ -1,7 +1,10 @@
 package source;
 
+import java.util.List;
+import java.util.Map;
+
 public interface IAgency {
-	void addBroker(User user) ;
-	void fireBroker(User user);
-	void listAllAds() ;
+	boolean addBroker(User user) ;
+	boolean fireBroker(User user);
+	List<Map<Object, Ad>> listAllAds() ;
 }
