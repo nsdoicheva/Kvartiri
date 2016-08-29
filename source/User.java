@@ -1,9 +1,6 @@
 package source;
 
-import java.util.List;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -14,8 +11,6 @@ import exceptions.WeakPasswordException;
 import exceptions.WrongInputException;
 import exceptions.WrongPasswordException;
 
-import java.util.Scanner;
-import java.util.Set;
 
 public abstract class User implements IUser {
 
@@ -23,17 +18,15 @@ public abstract class User implements IUser {
 	private static final String HOW_TO_START_LONG_NUMBER = "+359 8";
 	private static final int MAX_LENGTH_SHORT_NUMBER = 10;
 	private static final String HOW_TO_START_NUMBER = "08";
-	private static final int MAX_PASSWORD_ATTEMPTS = 3;
 	private static final int MIN_PASSWORD_LENGTH = 6;
 
 	private String name;
 	private String userName;
 	private String password;
-	private static Scanner sc = new Scanner(System.in);
 	private String phoneNumber;
 	private String address;
 	private String email;
-	private Map<Message, String> messages; // celiq message e unikalen
+	private Map<Message, String> messages; 
 	private Map<Object, Ad> myAds;
 	private AllAds allAds;
 	private boolean isBroker;
@@ -155,27 +148,39 @@ public abstract class User implements IUser {
 	}
 
 	@Override
-	public void uploadAd(Ad ad) {
-		this.myAds.put(ad.getId(), ad);
-		this.allAds.setAd(ad);
-	}
-
-	@Override
-	public void listAllMyAds() {
-		for (Entry<Object, Ad> entry : this.myAds.entrySet()) {
-			System.out.println(entry.getValue());
+	public boolean uploadAd(Ad ad) {
+		if (ad != null) {
+			this.myAds.put(ad.getId(), ad);
+			this.allAds.setAd(ad);
+			return true;
+		} else {
+			return false;
 		}
 	}
 
 	@Override
-	public void deleteAd(Ad ad) {
-		System.out.println(this.getUserName() + " wants to delete his ad " + ad.getName());
+	public Map<Object, Ad> listAllMyAds() {
+		Map<Object, Ad> allAdsOfUser = new HashMap<Object, Ad>();
+		for (Entry<Object, Ad> entry : this.myAds.entrySet()) {
+			allAdsOfUser.put(entry.getKey(), entry.getValue());
+		}
+		return allAdsOfUser;
+	}
 
-		for (Iterator<Map.Entry<Object, Ad>> it = this.myAds.entrySet().iterator(); it.hasNext();) {
-			Map.Entry<Object, Ad> entry = it.next();
-			if (entry.getValue().getId().equals(ad.getId())) {
-				it.remove();
+	@Override
+	public boolean deleteAd(Ad ad) {
+		if (ad != null) {
+			System.out.println(this.getUserName() + " wants to delete his ad " + ad.getName());
+
+			for (Iterator<Map.Entry<Object, Ad>> it = this.myAds.entrySet().iterator(); it.hasNext();) {
+				Map.Entry<Object, Ad> entry = it.next();
+				if (entry.getValue().getId().equals(ad.getId())) {
+					it.remove();
+				}
 			}
+			return true;
+		} else {
+			return false;
 		}
 
 	}
@@ -186,38 +191,40 @@ public abstract class User implements IUser {
 	}
 
 	@Override
-	public void upgrade(Ad ad, Criteria criteria, Object object) {
+	public boolean upgrade(Ad ad, Criteria criteria, Object object) {
 		switch (criteria) {
 		case NAME: {
 			System.out
 					.println(this.userName + " changes his ad's name \"" + ad.getName() + "\" to " + ((String) object));
 			ad.setName((String) object);
-			break;
+			return true;
 		}
 		case PRICE: {
 			System.out
 					.println(this.userName + "changes his ad \"" + ad.getName() + "\"'s price to " + ((double) object));
 			ad.setPricePerMonth((double) object);
-			break;
+			return true;
 		}
 		case NUMBER_OF_ROOMS: {
 			System.out.println(
 					this.userName + "changes his ad \"" + ad.getName() + "\"'s number of rooms to " + ((int) object));
 			ad.setNumberOfRooms((int) object);
-			break;
+			return true;
 		}
 		case SQUARE_METERS: {
 			System.out.println(
 					this.userName + "changes his ad \"" + ad.getName() + "\"'s square meters to " + ((double) object));
 			ad.setSquareMeters((double) object);
-			break;
+			return true;
 		}
 		case NEIGHBORHOOD: {
 			System.out.println(
 					this.userName + "changes his ad \"" + ad.getName() + "\"'s neighborhood to " + ((String) object));
 			ad.setNeighborhood((String) object);
-			break;
+			return true;
 		}
+		default:
+			return false;
 		}
 	}
 
@@ -266,13 +273,18 @@ public abstract class User implements IUser {
 	}
 
 	@Override
-	public void deleteMessage(User user) {
-		System.out.println(this.getUserName() + " wants to delete all messages from user: " + user.getUserName());
-		for (Iterator<Map.Entry<Message, String>> it = this.messages.entrySet().iterator(); it.hasNext();) {
-			Map.Entry<Message, String> entry = it.next();
-			if (entry.getValue().equals(user.getUserName())) {
-				it.remove();
+	public boolean deleteMessage(User user) {
+		if (user != null && this.messages != null) {
+			System.out.println(this.getUserName() + " wants to delete all messages from user: " + user.getUserName());
+			for (Iterator<Map.Entry<Message, String>> it = this.messages.entrySet().iterator(); it.hasNext();) {
+				Map.Entry<Message, String> entry = it.next();
+				if (entry.getValue().equals(user.getUserName())) {
+					it.remove();
+				}
 			}
+			return true;
+		} else {
+			return false;
 		}
 
 	}
@@ -382,12 +394,12 @@ public abstract class User implements IUser {
 		}
 		return copyOfMyAds;
 	}
-	
-	void putAnAd(Object obj, Ad ad){
+
+	void putAnAd(Object obj, Ad ad) {
 		myAds.put(obj, ad);
 	}
-	
-	void removeAnAd(Object obj, Ad ad){
+
+	void removeAnAd(Object obj, Ad ad) {
 		myAds.remove(obj, ad);
 	}
 
