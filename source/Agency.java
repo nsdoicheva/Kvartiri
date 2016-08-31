@@ -12,7 +12,6 @@ public class Agency extends User implements IAgency {
 	private Set<User> brokers;
 
 	// brokers username and ad
-	// private Map<String, List<Ad>> obqviNaAgenciqta;
 
 	public Agency(String name, String userName, String password, String phoneNumber, String address, String email) {
 		super(name, userName, password, phoneNumber, address, email);
