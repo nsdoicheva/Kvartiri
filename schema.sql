@@ -5,23 +5,23 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
 -- -----------------------------------------------------
--- Schema mydb
+-- Schema project
 -- -----------------------------------------------------
-DROP SCHEMA IF EXISTS `mydb` ;
+DROP SCHEMA IF EXISTS `project` ;
 
 -- -----------------------------------------------------
--- Schema mydb
+-- Schema project
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 ;
-USE `mydb` ;
+CREATE SCHEMA IF NOT EXISTS `project` DEFAULT CHARACTER SET utf8 ;
+USE `project` ;
 
 -- -----------------------------------------------------
--- Table `mydb`.`Profile_Picture`
+-- Table `project`.`Profile_Pictures`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `mydb`.`Profile_Picture` ;
+DROP TABLE IF EXISTS `project`.`Profile_Pictures` ;
 
-CREATE TABLE IF NOT EXISTS `mydb`.`Profile_Picture` (
-  `id` INT NOT NULL,
+CREATE TABLE IF NOT EXISTS `project`.`Profile_Pictures` (
+  `id` INT NOT NULL AUTO_INCREMENT,
   `path_to_picture` VARCHAR(2083) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC))
@@ -29,95 +29,94 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`User`
+-- Table `project`.`Users`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `mydb`.`User` ;
+DROP TABLE IF EXISTS `project`.`Users` ;
 
-CREATE TABLE IF NOT EXISTS `mydb`.`User` (
-  `id` INT NOT NULL,
+CREATE TABLE IF NOT EXISTS `project`.`Users` (
+  `id` INT NOT NULL AUTO_INCREMENT,
   `username` VARCHAR(45) NOT NULL,
   `password` VARCHAR(255) NOT NULL,
   `name` VARCHAR(255) NOT NULL,
   `phoneNumber` VARCHAR(15) NOT NULL,
   `address` VARCHAR(255) NOT NULL,
-  `e-mail` VARCHAR(50) NOT NULL,
-  `isBroker` TINYINT(1) NOT NULL,
+  `email` VARCHAR(50) NOT NULL,
   `Profile_Picture_id` INT NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `username_UNIQUE` (`username` ASC),
   UNIQUE INDEX `phone number_UNIQUE` (`phoneNumber` ASC),
-  UNIQUE INDEX `e-mail_UNIQUE` (`e-mail` ASC),
+  UNIQUE INDEX `e-mail_UNIQUE` (`email` ASC),
   INDEX `fk_User_profile_picture1_idx` (`Profile_Picture_id` ASC),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC),
   CONSTRAINT `fk_User_profile_picture1`
     FOREIGN KEY (`Profile_Picture_id`)
-    REFERENCES `mydb`.`Profile_Picture` (`id`)
-    ON DELETE NO ACTION
+    REFERENCES `project`.`Profile_Pictures` (`id`)
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`Registered_User`
+-- Table `project`.`Registered_Users`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `mydb`.`Registered_User` ;
+DROP TABLE IF EXISTS `project`.`Registered_Users` ;
 
-CREATE TABLE IF NOT EXISTS `mydb`.`Registered_User` (
+CREATE TABLE IF NOT EXISTS `project`.`Registered_Users` (
   `User_id` INT NOT NULL,
   INDEX `fk_Registered_User_User1_idx` (`User_id` ASC),
   PRIMARY KEY (`User_id`),
   UNIQUE INDEX `User_id_UNIQUE` (`User_id` ASC),
   CONSTRAINT `fk_Registered_User_User1`
     FOREIGN KEY (`User_id`)
-    REFERENCES `mydb`.`User` (`id`)
-    ON DELETE NO ACTION
+    REFERENCES `project`.`Users` (`id`)
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`Admin`
+-- Table `project`.`Admin`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `mydb`.`Admin` ;
+DROP TABLE IF EXISTS `project`.`Admin` ;
 
-CREATE TABLE IF NOT EXISTS `mydb`.`Admin` (
+CREATE TABLE IF NOT EXISTS `project`.`Admin` (
   `User_id` INT NOT NULL,
   PRIMARY KEY (`User_id`),
   INDEX `fk_Admin_User1_idx` (`User_id` ASC),
   UNIQUE INDEX `User_id_UNIQUE` (`User_id` ASC),
   CONSTRAINT `fk_Admin_User1`
     FOREIGN KEY (`User_id`)
-    REFERENCES `mydb`.`User` (`id`)
+    REFERENCES `project`.`Users` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`Agency`
+-- Table `project`.`Agencies`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `mydb`.`Agency` ;
+DROP TABLE IF EXISTS `project`.`Agencies` ;
 
-CREATE TABLE IF NOT EXISTS `mydb`.`Agency` (
+CREATE TABLE IF NOT EXISTS `project`.`Agencies` (
   `User_id` INT NOT NULL,
   INDEX `fk_Agency_User1_idx` (`User_id` ASC),
   PRIMARY KEY (`User_id`),
   UNIQUE INDEX `User_id_UNIQUE` (`User_id` ASC),
   CONSTRAINT `fk_Agency_User1`
     FOREIGN KEY (`User_id`)
-    REFERENCES `mydb`.`User` (`id`)
-    ON DELETE NO ACTION
+    REFERENCES `project`.`Users` (`id`)
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`Ad`
+-- Table `project`.`Ads`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `mydb`.`Ad` ;
+DROP TABLE IF EXISTS `project`.`Ads` ;
 
-CREATE TABLE IF NOT EXISTS `mydb`.`Ad` (
-  `id` INT NOT NULL,
+CREATE TABLE IF NOT EXISTS `project`.`Ads` (
+  `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NOT NULL,
   `address` VARCHAR(255) NOT NULL,
   `description` TEXT NOT NULL,
@@ -133,38 +132,38 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Ad` (
   INDEX `fk_Ad_User1_idx` (`User_id` ASC),
   CONSTRAINT `fk_Ad_User1`
     FOREIGN KEY (`User_id`)
-    REFERENCES `mydb`.`User` (`id`)
-    ON DELETE NO ACTION
+    REFERENCES `project`.`Users` (`id`)
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`Image`
+-- Table `project`.`Images`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `mydb`.`Image` ;
+DROP TABLE IF EXISTS `project`.`Images` ;
 
-CREATE TABLE IF NOT EXISTS `mydb`.`Image` (
-  `id` INT NOT NULL,
+CREATE TABLE IF NOT EXISTS `project`.`Images` (
+  `id` INT NOT NULL AUTO_INCREMENT,
   `path_to_image` VARCHAR(45) NOT NULL,
   `Ad_id` INT NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_Image_Ad1_idx` (`Ad_id` ASC),
   CONSTRAINT `fk_Image_Ad1`
     FOREIGN KEY (`Ad_id`)
-    REFERENCES `mydb`.`Ad` (`id`)
+    REFERENCES `project`.`Ads` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`Message`
+-- Table `project`.`Messages`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `mydb`.`Message` ;
+DROP TABLE IF EXISTS `project`.`Messages` ;
 
-CREATE TABLE IF NOT EXISTS `mydb`.`Message` (
-  `id` INT NOT NULL,
+CREATE TABLE IF NOT EXISTS `project`.`Messages` (
+  `id` INT NOT NULL AUTO_INCREMENT,
   `title` VARCHAR(45) NOT NULL,
   `content` TEXT NOT NULL,
   `User_id` INT NOT NULL,
@@ -172,56 +171,46 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Message` (
   INDEX `fk_Message_User1_idx` (`User_id` ASC),
   CONSTRAINT `fk_Message_User1`
     FOREIGN KEY (`User_id`)
-    REFERENCES `mydb`.`User` (`id`)
-    ON DELETE NO ACTION
+    REFERENCES `project`.`Users` (`id`)
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`sent_message`
+-- Table `project`.`sent_message`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `mydb`.`sent_message` ;
+DROP TABLE IF EXISTS `project`.`sent_message` ;
 
-CREATE TABLE IF NOT EXISTS `mydb`.`sent_message` (
+CREATE TABLE IF NOT EXISTS `project`.`sent_message` (
   `Message_id` INT NOT NULL,
   `sent_to_username` VARCHAR(45) NOT NULL,
   INDEX `fk_sent_message_Message1_idx` (`Message_id` ASC),
   PRIMARY KEY (`Message_id`),
   CONSTRAINT `fk_sent_message_Message1`
     FOREIGN KEY (`Message_id`)
-    REFERENCES `mydb`.`Message` (`id`)
+    REFERENCES `project`.`Messages` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`received_message`
+-- Table `project`.`received_message`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `mydb`.`received_message` ;
+DROP TABLE IF EXISTS `project`.`received_message` ;
 
-CREATE TABLE IF NOT EXISTS `mydb`.`received_message` (
+CREATE TABLE IF NOT EXISTS `project`.`received_message` (
   `Message_id` INT NOT NULL,
   `received_from_username` VARCHAR(45) NOT NULL,
   INDEX `fk_received_message_Message1_idx` (`Message_id` ASC),
   PRIMARY KEY (`Message_id`),
   CONSTRAINT `fk_received_message_Message1`
     FOREIGN KEY (`Message_id`)
-    REFERENCES `mydb`.`Message` (`id`)
+    REFERENCES `project`.`Messages` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `mydb`.`timestamps`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `mydb`.`timestamps` ;
-
-CREATE TABLE IF NOT EXISTS `mydb`.`timestamps` (
-  `create_time`  NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_time`  NULL);
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
