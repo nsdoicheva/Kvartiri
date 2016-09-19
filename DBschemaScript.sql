@@ -35,6 +35,7 @@ CREATE TABLE IF NOT EXISTS `project`.`Users` (
 ENGINE = InnoDB;
 
 
+
 -- -----------------------------------------------------
 -- Table `project`.`Registered_Users`
 -- -----------------------------------------------------
