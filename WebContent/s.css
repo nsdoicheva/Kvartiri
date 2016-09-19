@@ -1,0 +1,149 @@
+body {
+margin:0;
+background-color: #AFE0E4;
+
+}
+
+ul.topnav {
+    font-family: 'Lobster', cursive;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #059395;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: +1;
+
+}
+
+table {
+  width: 100%;
+}
+
+td img {
+width: 100%;
+} 
+
+
+
+/* Float the list items side by side */
+ul.topnav li {
+float: left;
+}
+
+ul.topnav li.login,
+ul.topnav li.logoutUser,
+ul.topnav li.welcomeUser {
+float: right;
+}
+
+ul.topnav li.activeLogin,
+ul.topnav li.activelogoutUser,
+ul.topnav li.activewelcomeUser {
+background-color: #73D0E1;
+float: right;
+}
+
+
+/* Style the links inside the list items */
+ul.topnav li a{
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+ul.topnav li a:hover:not(.active) {
+    background-color: #73D0E1;
+}
+
+.active {
+    background-color: #73D0E1;
+}
+
+
+
+/* Change background color of links on hover */
+
+aside .search {
+background-color:#92ba4e;
+width: 200px;
+height: 800px;
+margin-left:0;
+margin-top:-16px;
+}
+
+
+input { 
+margin-top:30px;
+margin-left:5px;
+}
+
+input[type=text] {    
+    width: 130px;
+    height: 30px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    font-size: 12px;
+    background-color: white;
+    background-position: 10px 10px;
+    background-repeat: no-repeat;
+    padding: 12px 20px 12px 40px;
+    -webkit-transition: width 0.4s ease-in-out;
+    transition: width 0.4s ease-in-out;
+}
+
+
+input[type=text]:focus {
+    width: 90%;
+}
+
+
+
+.content {
+width:1100px;
+height:900px;
+background-color: white;
+margin-top: -10px;
+margin-left: 130px;
+position:absolute;
+border-radius: 10%;
+box-shadow: 0px 0px 44px 0px #009AB4;
+}
+
+ul.topnav li.icon {display: none;}
+
+
+
+@media screen and (max-width:680px) {
+  ul.topnav li:not(:first-child) {display: none;}
+
+  ul.topnav li.icon {
+    float: right;
+    display: inline-block;
+  }
+
+  ul.topnav.responsive {position: absolute;}
+
+  ul.topnav.responsive li.icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+
+  ul.topnav.responsive li {
+    float: none;
+    display: inline;
+  }
+
+  ul.topnav.responsive li a {
+    display: block;
+    text-align: left;
+  }
+	
+}
+
