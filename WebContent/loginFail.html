@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html5>
+<html>
+<head>
+<meta charset="UTF-8">
+    <title>Софийски Дупки</title>
+    <link rel="stylesheet" href="s.css">
+    <link rel="stylesheet" href="login.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script type="text/javascript" src="myScript.js"> </script>
+    <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">
+
+</head>
+<body>
+
+<div class="page-wrap">
+
+<div class ="logo"> 
+<table id="Logo_table" width="1331" height="330" border="0" cellpadding="0" cellspacing="0">
+	<tr>
+		<td colspan="3"><img src="images/logo_01.gif" width="1445" height="124" alt=""></td>
+	</tr>
+	<tr>
+        	<td rowspan="2"><img src="images/logo_02.gif" width="505" height="206" alt=""></td>
+		<td><a href="indexUser.jsp"><img src="images/Home.gif" width="445" height="85" border="0" alt="index page link"></a></td>
+		<td rowspan="2"><img src="images/logo_04.gif" width="495" height="206" alt=""></td>
+	</tr>
+	<tr>
+		<td><img src="images/logo_05.gif" width="445" height="121" alt=""></td>
+	</tr>
+</table>
+<ul class="topnav" id="myTopnav">
+ <li><a href="indexUser.jsp">Начало</a></li>
+  <li><a href="kvartiri.jsp">Квартири</a></li>
+  <li><a href="agencies.jsp">Агенции</a></li>
+  <li><a href="newAd.jsp">Добави обява</a></li>
+  <li class="activeLogin"><a href="login.html">Вход</a>
+</li>
+  <li class="icon">
+    <a href="javascript:void(0);" style="font-size:15px;" onclick="responsiveTopnav()">☰</a>
+  </li>
+</ul>
+
+</div>
+<div class="login">
+  <div class="login-triangle"></div>
+  
+  <h2 class="login-header">Вход</h2>
+
+  <form class="login-container" action = LoginServlet method = POST>
+  	<blockquote>
+  	  <h5 style="color: #ff0000">Грешно потребителско име или парола</h5>
+	  </blockquote>
+    <p > <input type="text" name="username" placeholder="Потребителско име" style = "border-color : #ff0000"></p>
+    <p><input type="password" name="password" placeholder="Парола" style = "border-color : #ff0000"></p>
+<span class="password">Забравена <a href="forgotPassword.html">парола?</a></span>
+<br>
+<p><input type="submit" value="Вход">
+<a href="register.html"><input type="button" value="Регистрирай се"></a>
+<a href="registerAgency.html"><input type="button" value="Регистрирай агенция"></a>
+</p>
+ </form>
+</div>
+
+
+
+
+</div>
+
+
+
+</body>
+</html>
