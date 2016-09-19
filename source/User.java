@@ -1,6 +1,10 @@
 package source;
 
+import java.util.List;
+import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -11,6 +15,8 @@ import exceptions.WeakPasswordException;
 import exceptions.WrongInputException;
 import exceptions.WrongPasswordException;
 
+import java.util.Scanner;
+import java.util.Set;
 
 public abstract class User implements IUser {
 
@@ -18,21 +24,25 @@ public abstract class User implements IUser {
 	private static final String HOW_TO_START_LONG_NUMBER = "+359 8";
 	private static final int MAX_LENGTH_SHORT_NUMBER = 10;
 	private static final String HOW_TO_START_NUMBER = "08";
+	private static final int MAX_PASSWORD_ATTEMPTS = 3;
 	private static final int MIN_PASSWORD_LENGTH = 6;
 
 	private String name;
 	private String userName;
 	private String password;
+	private static Scanner sc = new Scanner(System.in);
 	private String phoneNumber;
 	private String address;
 	private String email;
-	private Map<Message, String> messages; 
+	private File profilePicture;
+	private String pathToFile;
+	private Map<Message, String> messages; // celiq message e unikalen
 	private Map<Object, Ad> myAds;
 	private AllAds allAds;
-	private boolean isBroker;
+	
 
 	protected User(String name, String phoneNumber, String address, String email) {
-		try {
+		try{
 			if (isValid(name)) {
 				this.name = name;
 			} else {
@@ -56,19 +66,18 @@ public abstract class User implements IUser {
 			} else {
 				throw new WrongInputException("Enter a valid email.");
 			}
-		} catch (WrongInputException e) {
+		}catch(WrongInputException e){
 			e.printStackTrace();
 		}
-		this.isBroker = false;
 		this.messages = new HashMap<Message, String>();
 		this.myAds = new LinkedHashMap<Object, Ad>();
 		this.allAds = AllAds.getInstance();
 
 	}
 
-	public User(String name, String userName, String password, String phoneNumber, String address, String email) {
+	public User(String name, String userName, String password, String phoneNumber, String address, String email) throws WeakPasswordException {
 		this(name, phoneNumber, address, email);
-		try {
+		try{
 			if (isValid(userName)) {
 				this.userName = userName;
 			} else {
@@ -80,10 +89,9 @@ public abstract class User implements IUser {
 			} else {
 				throw new WrongInputException("Enter a valid password.");
 			}
-		} catch (WrongInputException e) {
+		}catch(WrongInputException e){
 			e.printStackTrace();
 		}
-
 	}
 
 	private boolean isValid(String str) {
@@ -128,59 +136,43 @@ public abstract class User implements IUser {
 	// v tozi metod karame user-a mnogokratno da vuvede silna parola
 	// dokato ne postigne uspeh
 
-	public boolean isStrongPass(String password) {
+	public boolean isStrongPass(String password) throws WeakPasswordException {
 		if (isValid(password)) {
 			boolean isLongEnough = password.length() > MIN_PASSWORD_LENGTH;
-			boolean hasUppercase = !password.equals(password.toLowerCase());
 			boolean hasLowercase = !password.equals(password.toUpperCase());
 			boolean hasDigit = password.matches(".*\\d+.*");
-			try {
-				if (isLongEnough && hasUppercase && hasLowercase && hasDigit) {
+				if (isLongEnough && hasLowercase && hasDigit) {
 					return true;
 				} else {
 					throw new WeakPasswordException("Your password is too weak.");
 				}
-			} catch (WeakPasswordException e) {
-				e.printStackTrace();
-			}
+			
 		}
 		return false;
 	}
 
 	@Override
-	public boolean uploadAd(Ad ad) {
-		if (ad != null) {
-			this.myAds.put(ad.getId(), ad);
-			this.allAds.setAd(ad);
-			return true;
-		} else {
-			return false;
-		}
+	public void uploadAd(Ad ad) {
+		this.myAds.put(ad.getId(), ad);
+		this.allAds.setAd(ad);
 	}
 
 	@Override
-	public Map<Object, Ad> listAllMyAds() {
-		Map<Object, Ad> allAdsOfUser = new HashMap<Object, Ad>();
+	public void listAllMyAds() {
 		for (Entry<Object, Ad> entry : this.myAds.entrySet()) {
-			allAdsOfUser.put(entry.getKey(), entry.getValue());
+			System.out.println(entry.getValue());
 		}
-		return allAdsOfUser;
 	}
 
 	@Override
-	public boolean deleteAd(Ad ad) {
-		if (ad != null) {
-			System.out.println(this.getUserName() + " wants to delete his ad " + ad.getName());
+	public void deleteAd(Ad ad) {
+		System.out.println(this.getUserName() + " wants to delete his ad " + ad.getName());
 
-			for (Iterator<Map.Entry<Object, Ad>> it = this.myAds.entrySet().iterator(); it.hasNext();) {
-				Map.Entry<Object, Ad> entry = it.next();
-				if (entry.getValue().getId().equals(ad.getId())) {
-					it.remove();
-				}
+		for (Iterator<Map.Entry<Object, Ad>> it = this.myAds.entrySet().iterator(); it.hasNext();) {
+			Map.Entry<Object, Ad> entry = it.next();
+			if (entry.getValue().getId().equals(ad.getId())) {
+				it.remove();
 			}
-			return true;
-		} else {
-			return false;
 		}
 
 	}
@@ -191,40 +183,38 @@ public abstract class User implements IUser {
 	}
 
 	@Override
-	public boolean upgrade(Ad ad, Criteria criteria, Object object) {
+	public void upgrade(Ad ad, Criteria criteria, Object object) {
 		switch (criteria) {
 		case NAME: {
 			System.out
 					.println(this.userName + " changes his ad's name \"" + ad.getName() + "\" to " + ((String) object));
 			ad.setName((String) object);
-			return true;
+			break;
 		}
 		case PRICE: {
 			System.out
 					.println(this.userName + "changes his ad \"" + ad.getName() + "\"'s price to " + ((double) object));
 			ad.setPricePerMonth((double) object);
-			return true;
+			break;
 		}
 		case NUMBER_OF_ROOMS: {
 			System.out.println(
 					this.userName + "changes his ad \"" + ad.getName() + "\"'s number of rooms to " + ((int) object));
 			ad.setNumberOfRooms((int) object);
-			return true;
+			break;
 		}
 		case SQUARE_METERS: {
 			System.out.println(
 					this.userName + "changes his ad \"" + ad.getName() + "\"'s square meters to " + ((double) object));
 			ad.setSquareMeters((double) object);
-			return true;
+			break;
 		}
 		case NEIGHBORHOOD: {
 			System.out.println(
 					this.userName + "changes his ad \"" + ad.getName() + "\"'s neighborhood to " + ((String) object));
 			ad.setNeighborhood((String) object);
-			return true;
+			break;
 		}
-		default:
-			return false;
 		}
 	}
 
@@ -273,18 +263,13 @@ public abstract class User implements IUser {
 	}
 
 	@Override
-	public boolean deleteMessage(User user) {
-		if (user != null && this.messages != null) {
-			System.out.println(this.getUserName() + " wants to delete all messages from user: " + user.getUserName());
-			for (Iterator<Map.Entry<Message, String>> it = this.messages.entrySet().iterator(); it.hasNext();) {
-				Map.Entry<Message, String> entry = it.next();
-				if (entry.getValue().equals(user.getUserName())) {
-					it.remove();
-				}
+	public void deleteMessage(User user) {
+		System.out.println(this.getUserName() + " wants to delete all messages from user: " + user.getUserName());
+		for (Iterator<Map.Entry<Message, String>> it = this.messages.entrySet().iterator(); it.hasNext();) {
+			Map.Entry<Message, String> entry = it.next();
+			if (entry.getValue().equals(user.getUserName())) {
+				it.remove();
 			}
-			return true;
-		} else {
-			return false;
 		}
 
 	}
@@ -302,7 +287,7 @@ public abstract class User implements IUser {
 		return message;
 	}
 
-	String getName() {
+	public String getName() {
 		return name;
 	}
 
@@ -319,8 +304,8 @@ public abstract class User implements IUser {
 
 	}
 
-	String getUserName() {
-		return userName;
+	public String getUserName() {
+		return this.userName;
 	}
 
 	void setUserName(String userName) {
@@ -335,11 +320,11 @@ public abstract class User implements IUser {
 		}
 	}
 
-	String getPassword() {
+	public String getPassword() {
 		return password;
 	}
 
-	String getPhoneNumber() {
+	public String getPhoneNumber() {
 		return phoneNumber;
 	}
 
@@ -355,7 +340,7 @@ public abstract class User implements IUser {
 		}
 	}
 
-	String getAddress() {
+	public String getAddress() {
 		return address;
 	}
 
@@ -394,20 +379,20 @@ public abstract class User implements IUser {
 		}
 		return copyOfMyAds;
 	}
-
-	void putAnAd(Object obj, Ad ad) {
+	
+	void putAnAd(Object obj, Ad ad){
 		myAds.put(obj, ad);
 	}
-
-	void removeAnAd(Object obj, Ad ad) {
+	
+	void removeAnAd(Object obj, Ad ad){
 		myAds.remove(obj, ad);
 	}
 
-	boolean isBroker() {
-		return isBroker;
+	@Override
+	public String toString() {
+		return "User [name=" + name + ", userName=" + userName + ", password=" + password + ", phoneNumber="
+				+ phoneNumber + ", address=" + address + ", email=" + email + "\n]";
 	}
-
-	void setBroker(boolean isBroker) {
-		this.isBroker = isBroker;
-	}
+	
+	
 }
