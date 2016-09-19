@@ -9,4 +9,5 @@ public class NumberOfRoomsComparator implements Comparator<Ad> {
 	public int compare(Ad ad1, Ad ad2) {
 		return ad1.getNumberOfRooms() - ad2.getNumberOfRooms();
 	}
+
 }

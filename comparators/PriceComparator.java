@@ -11,6 +11,5 @@ public class PriceComparator implements Comparator<Ad>{
 	public int compare(Ad ad1, Ad ad2) {
 		return (int) (ad1.getPricePerMonth() - ad2.getPricePerMonth());
 	}
-	
 
 }
