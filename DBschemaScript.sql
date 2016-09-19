@@ -1,8 +1,7 @@
--- MySQL Workbench Forward Engineering
-
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+
 
 -- -----------------------------------------------------
 -- Schema project
@@ -16,43 +15,23 @@ CREATE SCHEMA IF NOT EXISTS `project` DEFAULT CHARACTER SET utf8 ;
 USE `project` ;
 
 -- -----------------------------------------------------
--- Table `project`.`Profile_Pictures`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `project`.`Profile_Pictures` ;
-
-CREATE TABLE IF NOT EXISTS `project`.`Profile_Pictures` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `path_to_picture` VARCHAR(2083) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `id_UNIQUE` (`id` ASC))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `project`.`Users`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `project`.`Users` ;
 
 CREATE TABLE IF NOT EXISTS `project`.`Users` (
   `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(255) NOT NULL,
   `username` VARCHAR(45) NOT NULL,
   `password` VARCHAR(255) NOT NULL,
-  `name` VARCHAR(255) NOT NULL,
   `phoneNumber` VARCHAR(15) NOT NULL,
   `address` VARCHAR(255) NOT NULL,
   `email` VARCHAR(50) NOT NULL,
-  `Profile_Picture_id` INT NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `username_UNIQUE` (`username` ASC),
   UNIQUE INDEX `phone number_UNIQUE` (`phoneNumber` ASC),
   UNIQUE INDEX `e-mail_UNIQUE` (`email` ASC),
-  INDEX `fk_User_profile_picture1_idx` (`Profile_Picture_id` ASC),
-  UNIQUE INDEX `id_UNIQUE` (`id` ASC),
-  CONSTRAINT `fk_User_profile_picture1`
-    FOREIGN KEY (`Profile_Picture_id`)
-    REFERENCES `project`.`Profile_Pictures` (`id`)
-    ON DELETE CASCADE
-    ON UPDATE NO ACTION)
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC))
 ENGINE = InnoDB;
 
 
