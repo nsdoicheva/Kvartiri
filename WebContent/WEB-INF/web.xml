@@ -2,10 +2,26 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
   <display-name>MySite</display-name>
   <welcome-file-list>
-    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>AdministratorProfile.jsp</welcome-file>
+    <welcome-file>indexUser.jsp</welcome-file>
+    <welcome-file>kvartiri.jsp</welcome-file>
+    <welcome-file>kvartiriGuest.jsp</welcome-file>
     <welcome-file>login.html</welcome-file>
+    <welcome-file>loginFail.html</welcome-file>
+    <welcome-file>newAd.jsp</welcome-file>
     <welcome-file>register.html</welcome-file>
     <welcome-file>registerAgency.html</welcome-file>
-    <welcome-file>Main.jsp</welcome-file>
+    <welcome-file>registerAgencyFailedNameEmail.html</welcome-file>
+    <welcome-file>registerAgencyFailedPassword.html</welcome-file>
+    <welcome-file>registrationFailedNameEmail.html</welcome-file>
+    <welcome-file>registrationFailedPassword.html</welcome-file>
+    <welcome-file>login.css</welcome-file>
+    <welcome-file>myScript.js</welcome-file>
+    <welcome-file>question.js</welcome-file>
+    <welcome-file>reg.css</welcome-file>
+    <welcome-file>regAgency.css</welcome-file>
+    <welcome-file>s.css</welcome-file>
+    <welcome-file>validation.js</welcome-file>
   </welcome-file-list>
 </web-app>
